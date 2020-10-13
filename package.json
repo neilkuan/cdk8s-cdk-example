@@ -52,6 +52,7 @@
     "@aws-cdk/aws-s3": "^1.67.0",
     "@aws-cdk/core": "^1.67.0",
     "cdk8s": "^0.30.0",
+    "cdk8s-aws-alb-ingress-controller": "^0.0.5",
     "cdk8s-plus": "^0.30.0",
     "constructs": "^3.0.4"
   },

@@ -1,27 +1,22 @@
-import * as s3 from '@aws-cdk/aws-s3';
 import * as cdk8s from 'cdk8s';
-import * as kplus from 'cdk8s-plus';
+import { AlbIngressController } from 'cdk8s-aws-alb-ingress-controller';
 import * as constructs from 'constructs';
 
 export interface MyChartProps {
-  readonly bucket: s3.Bucket;
+  readonly clusterName: string;
+  readonly replicas: number;
 }
 
 export class MyChart extends cdk8s.Chart {
+  readonly deploymentName: string;
+  readonly deploymentNameSpace: string;
   constructor(scope: constructs.Construct, id: string, props: MyChartProps) {
     super(scope, id);
-
-    new kplus.Pod(this, 'Pod', {
-      spec: {
-        containers: [
-          new kplus.Container({
-            image: 'nginx',
-            env: {
-              BUCKET_NAME: kplus.EnvValue.fromValue(props.bucket.bucketName),
-            },
-          }),
-        ],
-      },
+    const alb = new AlbIngressController(this, 'alb', {
+      clusterName: props.clusterName,
+      replicas: props.replicas,
     });
+    this.deploymentName = alb.deploymentName;
+    this.deploymentNameSpace = alb.namespace;
   }
 }

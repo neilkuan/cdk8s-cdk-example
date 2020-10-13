@@ -1683,6 +1683,11 @@ cdk-assets@1.67.0:
     glob "^7.1.6"
     yargs "^16.0.3"
 
+cdk8s-aws-alb-ingress-controller@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/cdk8s-aws-alb-ingress-controller/-/cdk8s-aws-alb-ingress-controller-0.0.5.tgz#c94b2226171690f5a146ef814346cf5d78553c41"
+  integrity sha512-JIwa+L5PEvl7gJvtsSKlSUThLlIRW9jk/oS6dUzqKg2Yw/oVwTdWRvEHq9YcgQtNjycXm2ybkfw2thzdlmO2iQ==
+
 cdk8s-plus@^0.30.0:
   version "0.30.0"
   resolved "https://registry.yarnpkg.com/cdk8s-plus/-/cdk8s-plus-0.30.0.tgz#8ec7ca3fc61163916b9b24a0465ab36f31af156e"

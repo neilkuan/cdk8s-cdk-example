@@ -17,6 +17,7 @@ project.addDependencies({
   'cdk8s': Semver.caret('0.30.0'),
   'cdk8s-plus': Semver.caret('0.30.0'),
   'constructs': Semver.caret('3.0.4'),
+  'cdk8s-aws-alb-ingress-controller': Semver.caret('0.0.5'),
 })
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log','coverage'];
 project.gitignore.exclude(...common_exclude);
