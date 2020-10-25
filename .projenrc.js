@@ -11,6 +11,7 @@ const project = new AwsCdkTypeScriptApp({
     '@aws-cdk/aws-eks',
     '@aws-cdk/aws-s3',
   ],
+  dependabot: false,
 });
 
 project.addDependencies({

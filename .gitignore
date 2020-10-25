@@ -54,7 +54,6 @@ coverage
 !/.versionrc.json
 !/.github/workflows/build.yml
 !/.mergify.yml
-!/.github/dependabot.yml
 !/tsconfig.json
 !/src
 !/tsconfig.jest.json
