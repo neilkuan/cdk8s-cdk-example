@@ -1,6 +1,6 @@
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as eks from '@aws-cdk/aws-eks';
-import { App, Stack, Construct } from '@aws-cdk/core';
+import { App, Stack, Construct, Tags } from '@aws-cdk/core';
 import * as cdk8s from 'cdk8s';
 import { AwsLoadBalancePolicy, VersionsLists } from 'cdk8s-aws-alb-ingress-controller';
 import { MyChartV2 } from './mycdk8s';
@@ -26,11 +26,15 @@ export class MainStack extends Construct {
     const myChart = new MyChartV2(new cdk8s.App(), 'MyChart', {
       clusterName: cluster.clusterName,
     });
-    cluster.addAutoScalingGroupCapacity('addnoManagedNG', {
+    // ASG node group
+    const asg = cluster.addAutoScalingGroupCapacity('addnoManagedNG', {
       instanceType: new ec2.InstanceType('t3.medium'),
       desiredCapacity: 1,
       spotPrice: '0.0416',
     });
+    const ASGSG = asg.node.findChild('InstanceSecurityGroup') as ec2.ISecurityGroup;
+    // remove kubernetes.io/cluster/${cluster.clusterName} tag from InstanceSecurityGroup.
+    Tags.of(ASGSG).remove(`kubernetes.io/cluster/${cluster.clusterName}`);
 
     const addCdk8sChart = cluster.addCdk8sChart('my-chart', myChart);
     addCdk8sChart.node.addDependency(sa);
