@@ -1,5 +1,6 @@
 import * as cdk8s from 'cdk8s';
 import { AlbIngressController, AwsLoadBalancerController } from 'cdk8s-aws-alb-ingress-controller';
+import { AwsExternalDns, AwsExternalDnsOptions } from 'cdk8s-external-dns';
 import * as constructs from 'constructs';
 
 export interface MyChartV2Props {
@@ -36,5 +37,21 @@ export class MyChartV1 extends cdk8s.Chart {
     });
     this.deploymentName = alb.deploymentName;
     this.deploymentNameSpace = alb.namespace;
+  }
+}
+
+export class externalDNS extends cdk8s.Chart {
+  readonly deploymentName: string;
+  readonly deploymentNameSpace: string;
+  readonly serviceAccountName: string;
+  constructor(scope: constructs.Construct, id: string, props: AwsExternalDnsOptions) {
+    super(scope, id);
+    const externaldns = new AwsExternalDns(this, 'dns', {
+      domainFilter: props.domainFilter,
+      namespace: props.namespace,
+    });
+    this.deploymentName = externaldns.deploymentName;
+    this.deploymentNameSpace = externaldns.namespace;
+    this.serviceAccountName = externaldns.serviceAccountName;
   }
 }

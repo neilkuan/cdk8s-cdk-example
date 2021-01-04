@@ -3,7 +3,8 @@ import * as eks from '@aws-cdk/aws-eks';
 import { App, Stack, Construct, Tags } from '@aws-cdk/core';
 import * as cdk8s from 'cdk8s';
 import { AwsLoadBalancePolicy, VersionsLists } from 'cdk8s-aws-alb-ingress-controller';
-import { MyChartV2 } from './mycdk8s';
+import { AwsExternalDnsPolicyHelper } from 'cdk8s-external-dns';
+import { MyChartV2, externalDNS } from './mycdk8s';
 // exmaple for v2
 export class MainStack extends Construct {
   constructor(scope: Construct, id: string) {
@@ -21,6 +22,15 @@ export class MainStack extends Construct {
       cluster: cluster,
       name: 'aws-load-balancer-controller',
     });
+    const externaldnsChart = new externalDNS(new cdk8s.App(), 'externalDNSchart', {
+      domainFilter: this.node.tryGetContext('domain'),
+    });
+    const dnssa = new eks.ServiceAccount(this, 'dnsserviceaccount', {
+      cluster: cluster,
+      name: externaldnsChart.serviceAccountName,
+      namespace: externaldnsChart.namespace,
+    });
+    AwsExternalDnsPolicyHelper.addPolicy(dnssa);
     AwsLoadBalancePolicy.addPolicy(
       VersionsLists.AWS_LOAD_BALANCER_CONTROLLER_POLICY_V2, sa );
     const myChart = new MyChartV2(new cdk8s.App(), 'MyChart', {
@@ -36,8 +46,9 @@ export class MainStack extends Construct {
     // remove kubernetes.io/cluster/${cluster.clusterName} tag from InstanceSecurityGroup.
     // in aws-cdk version 1.82.0 already fix it do not remove by youself.
     Tags.of(ASGSG).remove(`kubernetes.io/cluster/${cluster.clusterName}`);
-
     const addCdk8sChart = cluster.addCdk8sChart('my-chart', myChart);
+    const adddnschart = cluster.addCdk8sChart('adddnschart', externaldnsChart);
+    adddnschart.node.addDependency(dnssa);
     addCdk8sChart.node.addDependency(sa);
 
   }

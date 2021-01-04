@@ -1,8 +1,8 @@
-const { AwsCdkTypeScriptApp, Semver } = require('projen');
+const { AwsCdkTypeScriptApp } = require('projen');
 
 const project = new AwsCdkTypeScriptApp({
   name: "cdk8sXawscdk",
-  cdkVersion: '1.74.0',
+  cdkVersion: '1.82.0',
   authorName: 'Neil Kuan',
   authorEmail: 'guan840912@gmail.com',
   cdkDependencies: [
@@ -12,14 +12,15 @@ const project = new AwsCdkTypeScriptApp({
     '@aws-cdk/aws-s3',
   ],
   dependabot: false,
+  deps: [
+  'cdk8s@^0.33.0',
+  'cdk8s-plus@^0.33.0',
+  'constructs',
+  'cdk8s-aws-alb-ingress-controller@^1.0.0',
+  'cdk8s-external-dns'
+  ],
 });
 
-project.addDependencies({
-  'cdk8s': Semver.caret('0.33.0'),
-  'cdk8s-plus': Semver.caret('0.33.0'),
-  'constructs': Semver.caret('3.2.37'),
-  'cdk8s-aws-alb-ingress-controller': Semver.caret('1.0.0'),
-})
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log','coverage'];
 project.gitignore.exclude(...common_exclude);
 
