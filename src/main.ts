@@ -34,6 +34,7 @@ export class MainStack extends Construct {
     });
     const ASGSG = asg.node.findChild('InstanceSecurityGroup') as ec2.ISecurityGroup;
     // remove kubernetes.io/cluster/${cluster.clusterName} tag from InstanceSecurityGroup.
+    // in aws-cdk version 1.82.0 already fix it do not remove by youself.
     Tags.of(ASGSG).remove(`kubernetes.io/cluster/${cluster.clusterName}`);
 
     const addCdk8sChart = cluster.addCdk8sChart('my-chart', myChart);
