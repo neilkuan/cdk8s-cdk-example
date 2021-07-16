@@ -1,22 +1,23 @@
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as eks from '@aws-cdk/aws-eks';
-import { App, Stack, Construct, Tags } from '@aws-cdk/core';
+import { App, Stack, Construct } from '@aws-cdk/core';
 import * as cdk8s from 'cdk8s';
-import { AwsLoadBalancePolicy, VersionsLists } from 'cdk8s-aws-alb-ingress-controller';
+import { AwsLoadBalancePolicy, VersionsLists } from 'cdk8s-aws-load-balancer-controller';
 import { AwsExternalDnsPolicyHelper } from 'cdk8s-external-dns';
 import { MyChartV2, externalDNS } from './mycdk8s';
 // exmaple for v2
-export class MainStack extends Construct {
+export class MainStack extends Stack {
   constructor(scope: Construct, id: string) {
     super(scope, id);
+    const vpc = new ec2.Vpc(this, 'newVpc', {
+      natGateways: 1,
+      maxAzs: 2,
+    });
     const cluster = new eks.Cluster(this, 'cdk8s-alb', {
       version: eks.KubernetesVersion.V1_18,
       defaultCapacity: 0,
       clusterName: 'albIngressDemo',
-      vpc: new ec2.Vpc(this, 'newVpc', {
-        natGateways: 1,
-        maxAzs: 2,
-      }),
+      vpc,
     });
     const sa = new eks.ServiceAccount(this, 'albserviceaccount', {
       cluster: cluster,
@@ -37,15 +38,11 @@ export class MainStack extends Construct {
       clusterName: cluster.clusterName,
     });
     // ASG node group
-    const asg = cluster.addAutoScalingGroupCapacity('addnoManagedNG', {
+    cluster.addAutoScalingGroupCapacity('addnoManagedNG', {
       instanceType: new ec2.InstanceType('t3.medium'),
       desiredCapacity: 1,
       spotPrice: '0.0416',
     });
-    const ASGSG = asg.node.findChild('InstanceSecurityGroup') as ec2.ISecurityGroup;
-    // remove kubernetes.io/cluster/${cluster.clusterName} tag from InstanceSecurityGroup.
-    // in aws-cdk version 1.82.0 already fix it do not remove by youself.
-    Tags.of(ASGSG).remove(`kubernetes.io/cluster/${cluster.clusterName}`);
     const addCdk8sChart = cluster.addCdk8sChart('my-chart', myChart);
     const adddnschart = cluster.addCdk8sChart('adddnschart', externaldnsChart);
     adddnschart.node.addDependency(dnssa);
@@ -54,18 +51,11 @@ export class MainStack extends Construct {
   }
 }
 // for development, use account/region from cdk cli
-const devEnv = {
-  account: process.env.CDK_DEFAULT_ACCOUNT,
-  region: process.env.CDK_DEFAULT_REGION,
-};
 
 const app = new App();
 
 // new stack
-const stack = new Stack(app, 'EKSstack', {
-  env: devEnv,
-});
-new MainStack(stack, 'MainStack');
+new MainStack(app, 'MainStack');
 app.synth();
 
 // V1 example

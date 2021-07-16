@@ -1,10 +1,9 @@
 import '@aws-cdk/assert/jest';
-import { App, Stack } from '@aws-cdk/core';
-import * as main from '../src/main';
+import { App } from '@aws-cdk/core';
+import { MainStack } from '../src/main';
 
-test('Create the EKS', () => {
-  const mockApp = new App();
-  const stack = new Stack(mockApp);
-  new main.MainStack(stack, 'Mainstack');
-  expect(stack).toHaveResource('AWS::IAM::Role');
+test('Snapshot', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  expect(stack).toHaveResource('Custom::AWSCDK-EKS-KubernetesResource');
 });

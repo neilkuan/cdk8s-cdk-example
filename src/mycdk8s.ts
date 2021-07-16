@@ -1,5 +1,5 @@
 import * as cdk8s from 'cdk8s';
-import { AlbIngressController, AwsLoadBalancerController } from 'cdk8s-aws-alb-ingress-controller';
+import { AlbIngressController, AwsLoadBalancerController } from 'cdk8s-aws-load-balancer-controller';
 import { AwsExternalDns, AwsExternalDnsOptions } from 'cdk8s-external-dns';
 import * as constructs from 'constructs';
 
