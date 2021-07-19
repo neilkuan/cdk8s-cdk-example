@@ -1963,10 +1963,10 @@ cdk-assets@1.114.0:
     mime "^2.5.2"
     yargs "^16.2.0"
 
-cdk8s-aws-load-balancer-controller@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/cdk8s-aws-load-balancer-controller/-/cdk8s-aws-load-balancer-controller-2.3.2.tgz#701a6a6a41eaf7868513ec134b81ce384750c1ff"
-  integrity sha512-pUg9ZHljrqUSg4BHlkSM3wg5ph1vGmTdTsE9uo3Oy1rY7c9LcBYVmZ8p6Q5hJkZlXJr6zX06E7dg6gKemu+WzQ==
+cdk8s-aws-load-balancer-controller@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/cdk8s-aws-load-balancer-controller/-/cdk8s-aws-load-balancer-controller-2.3.3.tgz#b8adacd8f1efdf22a04af55667f5c91da1d614cb"
+  integrity sha512-xdqZmdhtrio/MvmNBn+IM+7L8u+HXBpLromNhn7qdcQ96OMxCB/Sv6E62w0B1xlZ66gux6uDTbpGXpvGV7kfHg==
   dependencies:
     "@types/js-yaml" "^3.12.5"
     js-yaml "^3.14.0"
