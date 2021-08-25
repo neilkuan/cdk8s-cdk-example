@@ -37,7 +37,7 @@
     "eslint": "^7.32.0",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.4.0",
-    "eslint-plugin-import": "^2.24.1",
+    "eslint-plugin-import": "^2.24.2",
     "jest": "^26.6.3",
     "jest-junit": "^12",
     "json-schema": "^0.3.0",
@@ -56,7 +56,7 @@
     "cdk8s": "^0.33.0",
     "cdk8s-aws-load-balancer-controller": "^2.3.5",
     "cdk8s-external-dns": "^0.0.3",
-    "constructs": "^3.3.131"
+    "constructs": "^3.3.132"
   },
   "bundledDependencies": [],
   "license": "Apache-2.0",
