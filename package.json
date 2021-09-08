@@ -54,7 +54,7 @@
     "@aws-cdk/aws-iam": "^1.114.0",
     "@aws-cdk/core": "^1.114.0",
     "cdk8s": "^0.33.0",
-    "cdk8s-aws-load-balancer-controller": "^2.3.5",
+    "cdk8s-aws-load-balancer-controller": "^2.3.6",
     "cdk8s-external-dns": "^0.0.3",
     "constructs": "^3.3.147"
   },
