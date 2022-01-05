@@ -1,5 +1,11 @@
 # cdk8s-cdk-example
 
+## Note!!!
+Before you run deploy, please install helm in your computer and run
+
+- `helm repo add eks https://aws.github.io/eks-charts`
+- `helm repo`
+
 
 ## How to use ?!
 ```bash
