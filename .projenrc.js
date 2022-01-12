@@ -1,6 +1,6 @@
-const { AwsCdkTypeScriptApp, DependenciesUpgradeMechanism } = require('projen');
+const { awscdk } = require('projen');
 
-const project = new AwsCdkTypeScriptApp({
+const project = new awscdk.AwsCdkTypeScriptApp({
   name: 'cdk8sXawscdk',
   cdkVersion: '1.114.0',
   authorName: 'Neil Kuan',
@@ -19,12 +19,11 @@ const project = new AwsCdkTypeScriptApp({
     'cdk8s-aws-load-balancer-controller',
     'cdk8s-external-dns',
   ],
-  depsUpgrade: DependenciesUpgradeMechanism.githubWorkflow({
+  depsUpgradeOptions: {
     workflowOptions: {
       labels: ['auto-approve'],
-      secret: 'AUTOMATION_GITHUB_TOKEN',
     },
-  }),
+  },
   autoApproveOptions: {
     secret: 'GITHUB_TOKEN',
     allowedUsernames: ['neilkuan'],
